@@ -14,7 +14,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: this.config.get<string>('PGDB_USER'),
       password: this.config.get<string>('PGDB_PASSWORD'),
       database: this.config.get<string>('PGDB_NAME'),
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
       synchronize: true,
     };
   }
