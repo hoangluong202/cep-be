@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EventEntity } from '../event.entity';
+import { EventEntity } from '../entities/event.entity';
 import { Repository } from 'typeorm';
 import { Event } from 'src/event/domain/event';
 import { NullableType } from 'src/utils/types/nullable.type';

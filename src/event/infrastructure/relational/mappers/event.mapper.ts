@@ -1,5 +1,5 @@
 import { Event } from 'src/event/domain/event';
-import { EventEntity } from '../event.entity';
+import { EventEntity } from '../entities/event.entity';
 
 export class EventMapper {
   static toDomain(raw: EventEntity): Event {

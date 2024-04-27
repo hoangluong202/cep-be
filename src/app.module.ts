@@ -7,6 +7,7 @@ import { TypeOrmConfigService } from './database/config/typeorm';
 import { SmartpoleModule } from './smartpole/smartpole.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { EventModule } from './event/event.module';
+import { SchedulerModule } from './scheduler/scheduler.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { EventModule } from './event/event.module';
     SmartpoleModule,
     CalendarModule,
     EventModule,
+    SchedulerModule,
   ],
 })
 export class AppModule {}
