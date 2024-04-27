@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { EventEntity } from 'src/event/infrastructure/relational/entities/event.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'calendar' })
 export class CalendarEntity {
@@ -14,4 +15,9 @@ export class CalendarEntity {
     endHour: string;
     lightLevel: number;
   }[];
+
+  @OneToMany(() => EventEntity, (event) => event.calendar, {
+    onDelete: 'CASCADE',
+  })
+  events: EventEntity[];
 }

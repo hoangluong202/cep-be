@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { EventEntity } from 'src/event/infrastructure/relational/entities/event.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'smartpole' })
 export class SmartpoleEntity {
@@ -31,4 +39,20 @@ export class SmartpoleEntity {
 
   @Column({ type: 'numeric' })
   frequency: number;
+
+  @ManyToOne(() => EventEntity, (event) => event.polesArea, {
+    onDelete: 'CASCADE',
+  })
+  eventArea?: EventEntity;
+
+  @ManyToOne(() => EventEntity, (event) => event.polesRoad, {
+    onDelete: 'CASCADE',
+  })
+  eventRoad?: EventEntity;
+
+  @OneToOne(() => EventEntity, (event) => event.pole, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  eventPole?: EventEntity;
 }

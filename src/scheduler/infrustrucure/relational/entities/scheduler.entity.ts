@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { EventEntity } from 'src/event/infrastructure/relational/entities/event.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('scheduler')
 export class SchedulerEntity {
@@ -16,4 +17,7 @@ export class SchedulerEntity {
 
   @Column({ type: Number })
   lightLevel: number;
+
+  @ManyToOne(() => EventEntity, (eventEntity) => eventEntity.schedulers)
+  event: EventEntity;
 }

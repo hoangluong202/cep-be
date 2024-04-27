@@ -4,7 +4,7 @@ import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { Smartpole } from './domain/smartpole';
 
 @ApiTags('Pole')
-@Controller('smartpoles')
+@Controller('poles')
 export class SmartpoleController {
   constructor(private readonly smartpoleService: SmartpoleService) {}
 
