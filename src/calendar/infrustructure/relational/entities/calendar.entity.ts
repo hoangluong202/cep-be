@@ -8,7 +8,7 @@ export class CalendarEntity {
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'jsonb', array: true })
+  @Column({ type: 'json' })
   configLightLevel: {
     startHour: string;
     endHour: string;

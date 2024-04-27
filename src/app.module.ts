@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './database/config/typeorm';
 import { SmartpoleModule } from './smartpole/smartpole.module';
 import { CalendarModule } from './calendar/calendar.module';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CalendarModule } from './calendar/calendar.module';
     AuthModule,
     SmartpoleModule,
     CalendarModule,
+    EventModule,
   ],
 })
 export class AppModule {}
