@@ -1,4 +1,4 @@
-export class Smartpole {
+export class Pole {
   id: number;
   name: string;
   area: string;

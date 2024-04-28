@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'smartpole' })
-export class SmartpoleEntity {
+export class PoleEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 

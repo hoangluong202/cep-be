@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './database/config/typeorm';
-import { SmartpoleModule } from './smartpole/smartpole.module';
+import { PoleModule } from './pole/pole.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { EventModule } from './event/event.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
@@ -20,7 +20,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
     }),
     UserModule,
     AuthModule,
-    SmartpoleModule,
+    PoleModule,
     CalendarModule,
     EventModule,
     SchedulerModule,

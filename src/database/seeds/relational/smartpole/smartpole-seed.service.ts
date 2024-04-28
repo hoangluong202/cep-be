@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SmartpoleEntity } from 'src/smartpole/infrastructure/relational/entities/smartpole.entity';
+import { PoleEntity } from 'src/pole/infrastructure/relational/entities/pole.entity';
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class SmartpoleSeedService {
   constructor(
-    @InjectRepository(SmartpoleEntity)
-    private repository: Repository<SmartpoleEntity>,
+    @InjectRepository(PoleEntity)
+    private repository: Repository<PoleEntity>,
   ) {}
   async run() {
     const areas = ['HCMUT-CS1', 'HCMUT-CS2'];

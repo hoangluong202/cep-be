@@ -1,6 +1,6 @@
 import { CalendarEntity } from 'src/calendar/infrustructure/relational/entities/calendar.entity';
 import { SchedulerEntity } from 'src/scheduler/infrustrucure/relational/entities/scheduler.entity';
-import { SmartpoleEntity } from 'src/smartpole/infrastructure/relational/entities/smartpole.entity';
+import { PoleEntity } from 'src/pole/infrastructure/relational/entities/pole.entity';
 import {
   Column,
   Entity,
@@ -21,14 +21,14 @@ export class EventEntity {
   @ManyToOne(() => CalendarEntity, (calendar) => calendar.events)
   calendar: CalendarEntity;
 
-  @OneToMany(() => SmartpoleEntity, (smartpole) => smartpole.eventArea)
-  polesArea: SmartpoleEntity[];
+  @OneToMany(() => PoleEntity, (smartpole) => smartpole.eventArea)
+  polesArea: PoleEntity[];
 
-  @OneToMany(() => SmartpoleEntity, (smartpole) => smartpole.eventRoad)
-  polesRoad: SmartpoleEntity[];
+  @OneToMany(() => PoleEntity, (smartpole) => smartpole.eventRoad)
+  polesRoad: PoleEntity[];
 
-  @OneToOne(() => SmartpoleEntity, (smartpole) => smartpole.eventPole)
-  pole: SmartpoleEntity;
+  @OneToOne(() => PoleEntity, (smartpole) => smartpole.eventPole)
+  pole: PoleEntity;
 
   @OneToMany(() => SchedulerEntity, (scheduler) => scheduler.event, {
     onDelete: 'CASCADE',
