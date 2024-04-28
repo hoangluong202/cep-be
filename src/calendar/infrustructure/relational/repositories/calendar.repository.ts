@@ -3,7 +3,8 @@ import { Repository } from 'typeorm';
 import { CalendarEntity } from '../entities/calendar.entity';
 import { Injectable } from '@nestjs/common';
 import { Calendar } from 'src/calendar/domain/calendar';
-import { CreateCalendarDto } from 'src/calendar/dto/create-calendar.dto';
+import { CalendarMapper } from '../mappers/calendar.mapper';
+import { NullableType } from 'src/utils/types/nullable.type';
 
 @Injectable()
 export class CalendarRepository {
@@ -12,14 +13,18 @@ export class CalendarRepository {
     private repository: Repository<CalendarEntity>,
   ) {}
 
-  async findById(id: Calendar['id']): Promise<CalendarEntity> {
-    return this.repository.findOneBy({ id: id });
+  async findById(id: number): Promise<NullableType<Calendar>> {
+    const calendar = await this.repository.findOneBy({ id: id });
+    return calendar ? CalendarMapper.toDomain(calendar) : null;
   }
 
-  async create(data: CreateCalendarDto) {
+  async create(data: Calendar): Promise<Calendar> {
     try {
-      const calendar = this.repository.create(data);
-      await this.repository.save(calendar);
+      const entity = CalendarMapper.toEntity(data);
+      const calendar = await this.repository.save(
+        this.repository.create(entity),
+      );
+      return CalendarMapper.toDomain(calendar);
     } catch (err) {
       throw new Error(err);
     }

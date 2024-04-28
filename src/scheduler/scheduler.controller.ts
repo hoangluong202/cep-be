@@ -6,7 +6,7 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { SchedulerService } from './scheduler.service';
 import { CreateSchedulerDto } from './dto/create-scheduler.dto';
 import { Scheduler } from './domain/scheduler';
@@ -24,11 +24,13 @@ export class SchedulerController {
     return this.schedulerService.findById(id);
   }
 
+  @ApiOkResponse({
+    type: Scheduler,
+    isArray: true,
+  })
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(
-    @Body() createSchedulerDto: CreateSchedulerDto,
-  ): Promise<Scheduler> {
+  create(@Body() createSchedulerDto: CreateSchedulerDto): Promise<Scheduler[]> {
     return this.schedulerService.create(createSchedulerDto);
   }
 }

@@ -1,15 +1,21 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateSchedulerDto {
-  @ApiProperty({ example: 'hcmut1' })
+  @ApiProperty({ example: 5 })
+  calendarId: number;
+
+  @ApiProperty({ example: 'HCMUT-CS1' })
   area: string;
 
-  @ApiProperty({ example: 1 })
-  poleId: number;
+  @ApiPropertyOptional({ example: 'Road 1' })
+  road?: string | null;
 
-  @ApiProperty({ example: '2024-04-27T19:30:00.000Z' })
-  time: Date;
+  @ApiPropertyOptional({ example: 128 })
+  poleId?: number | null;
 
-  @ApiProperty({ example: 44 })
-  lightLevel: number;
+  @ApiProperty({
+    example:
+      'DTSTART:20240101T000000Z\nRRULE:FREQ=DAILY;INTERVAL=3;UNTIL=20240210T000000Z',
+  })
+  rule: string;
 }

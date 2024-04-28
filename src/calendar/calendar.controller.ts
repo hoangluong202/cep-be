@@ -7,7 +7,7 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { CalendarService } from './calendar.service';
 import { Calendar } from './domain/calendar';
 import { CreateCalendarDto } from './dto/create-calendar.dto';
@@ -23,9 +23,14 @@ export class CalendarController {
     return this.calendarService.findById(id);
   }
 
+  @ApiOkResponse({
+    type: Calendar,
+  })
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() createCalendarDto: CreateCalendarDto) {
+  async create(
+    @Body() createCalendarDto: CreateCalendarDto,
+  ): Promise<Calendar> {
     return this.calendarService.create(createCalendarDto);
   }
 }

@@ -7,7 +7,7 @@ import { SchedulerMapper } from '../mappers/scheduler.mapper';
 import { NullableType } from 'src/utils/types/nullable.type';
 
 @Injectable()
-export class SchedulerRepository implements SchedulerRepository {
+export class SchedulerRepository {
   constructor(
     @InjectRepository(SchedulerEntity)
     private readonly schedulerRepository: Repository<SchedulerEntity>,
@@ -18,13 +18,17 @@ export class SchedulerRepository implements SchedulerRepository {
     return scheduler ? SchedulerMapper.toDomain(scheduler) : null;
   }
 
-  async create(data: Scheduler): Promise<Scheduler> {
+  async createMany(data: Scheduler[]): Promise<Scheduler[]> {
     try {
-      const persistedScheduler = SchedulerMapper.toPersistence(data);
-      const newScheduler = await this.schedulerRepository.save(
-        this.schedulerRepository.create(persistedScheduler),
+      const persistedSchedulers = data.map((scheduler) =>
+        SchedulerMapper.toPersistence(scheduler),
       );
-      return SchedulerMapper.toDomain(newScheduler);
+      const schedulerEntities = await this.schedulerRepository.save(
+        this.schedulerRepository.create(persistedSchedulers),
+      );
+      return schedulerEntities.map((schedulerEntity) =>
+        SchedulerMapper.toDomain(schedulerEntity),
+      );
     } catch (err) {
       throw new Error(err);
     }
