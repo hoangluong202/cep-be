@@ -4,9 +4,10 @@ import { PoleEntity } from 'src/pole/infrastructure/relational/entities/pole.ent
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -18,17 +19,15 @@ export class EventEntity {
   @Column({ type: 'varchar' })
   rule: string;
 
+  @Column({ type: 'varchar' })
+  type: string;
+
   @ManyToOne(() => CalendarEntity, (calendar) => calendar.events)
   calendar: CalendarEntity;
 
-  @OneToMany(() => PoleEntity, (pole) => pole.eventArea)
-  polesArea: PoleEntity[];
-
-  @OneToMany(() => PoleEntity, (pole) => pole.eventRoad)
-  polesRoad: PoleEntity[];
-
-  @OneToOne(() => PoleEntity, (pole) => pole.eventPole)
-  pole: PoleEntity;
+  @ManyToMany(() => PoleEntity)
+  @JoinTable()
+  poles: PoleEntity[];
 
   @OneToMany(() => SchedulerEntity, (scheduler) => scheduler.event, {
     onDelete: 'CASCADE',

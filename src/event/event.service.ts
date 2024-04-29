@@ -45,29 +45,29 @@ export class EventService {
       rule: createEventDto.rule,
     });
 
+    const type = createEventDto.poleId
+      ? 'Pole'
+      : createEventDto.road
+      ? 'Road'
+      : createEventDto.area
+      ? 'Area'
+      : null;
+    if (!type) {
+      throw new Error('Type not found');
+    }
+
     const eventPayload: Omit<Event, 'id'> = {
       rule: createEventDto.rule,
+      type: type,
       calendar: calendar,
       schedulers: schedulers,
+      poles: poles,
     };
-
-    if (createEventDto.area && !createEventDto.road && !createEventDto.poleId) {
-      eventPayload.polesArea = poles;
-    }
-
-    if (createEventDto.area && createEventDto.road && !createEventDto.poleId) {
-      eventPayload.polesRoad = poles;
-    }
-
-    if (createEventDto.area && createEventDto.road && createEventDto.poleId) {
-      eventPayload.pole = poles[0];
-    }
     return this.eventRepository.create(eventPayload);
   }
 
   async findMany(filters?: FilterEventDto | null): Promise<Event[]> {
     const events = await this.eventRepository.findMany(filters);
-    console.log(events);
     return events;
   }
 }

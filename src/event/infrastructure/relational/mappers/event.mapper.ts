@@ -13,26 +13,19 @@ export class EventMapper {
     const event = new Event();
     event.id = raw.id;
     event.rule = raw.rule;
+    event.type = raw.type;
     event.calendar = CalendarMapper.toDomain(raw.calendar);
     event.schedulers = raw.schedulers.map((scheduler) =>
       SchedulerMapper.toDomain(scheduler),
     );
-    if (raw.polesArea) {
-      event.polesArea = raw.polesArea.map((pole) => PoleMapper.toDomain(pole));
-    }
-    if (raw.polesRoad) {
-      event.polesRoad = raw.polesRoad.map((pole) => PoleMapper.toDomain(pole));
-    }
-    if (raw.pole) {
-      event.pole = PoleMapper.toDomain(raw.pole);
-    }
-
+    event.poles = raw.poles.map((pole) => PoleMapper.toDomain(pole));
     return event;
   }
 
   static toEntity(event: Omit<Event, 'id'>): EventEntity {
     const eventEntity = new EventEntity();
     eventEntity.rule = event.rule;
+    eventEntity.type = event.type;
 
     const calendar: CalendarEntity = new CalendarEntity();
     calendar.id = event.calendar.id;
@@ -45,29 +38,12 @@ export class EventMapper {
     });
     eventEntity.schedulers = schedulers;
 
-    if (event.polesArea) {
-      const polesArea = event.polesArea.map((pole) => {
-        const poleEntity = new PoleEntity();
-        poleEntity.id = pole.id;
-        return poleEntity;
-      });
-      eventEntity.polesArea = polesArea;
-    }
-
-    if (event.polesRoad) {
-      const polesRoad = event.polesRoad.map((pole) => {
-        const poleEntity = new PoleEntity();
-        poleEntity.id = pole.id;
-        return poleEntity;
-      });
-      eventEntity.polesRoad = polesRoad;
-    }
-
-    if (event.pole) {
-      const pole = new PoleEntity();
-      pole.id = event.pole.id;
-      eventEntity.pole = pole;
-    }
+    const poles = event.poles.map((pole) => {
+      const poleEntity = new PoleEntity();
+      poleEntity.id = pole.id;
+      return poleEntity;
+    });
+    eventEntity.poles = poles;
 
     return eventEntity;
   }

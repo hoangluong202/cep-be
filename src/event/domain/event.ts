@@ -5,9 +5,8 @@ import { Scheduler } from 'src/scheduler/domain/scheduler';
 export class Event {
   id: number;
   rule: string;
+  type: string;
   calendar: Calendar;
-  polesArea?: Pole[] | null;
-  polesRoad?: Pole[] | null;
-  pole?: Pole | null;
+  poles?: Pole[] | null;
   schedulers: Scheduler[];
 }

@@ -13,7 +13,6 @@ import { EventService } from './event.service';
 import { Event } from './domain/event';
 import { NullableType } from 'src/utils/types/nullable.type';
 import { CreateEventDto } from './dto/create-event.dto';
-import { FilterPoleDto } from 'src/pole/dto/query-pole.dto';
 import { FilterEventDto } from './dto/query-event.dto';
 
 @ApiTags('Event')

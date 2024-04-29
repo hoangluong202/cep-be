@@ -39,20 +39,4 @@ export class PoleEntity {
 
   @Column({ type: 'numeric' })
   frequency: number;
-
-  @ManyToOne(() => EventEntity, (event) => event.polesArea, {
-    onDelete: 'CASCADE',
-  })
-  eventArea?: EventEntity;
-
-  @ManyToOne(() => EventEntity, (event) => event.polesRoad, {
-    onDelete: 'CASCADE',
-  })
-  eventRoad?: EventEntity;
-
-  @OneToOne(() => EventEntity, (event) => event.pole, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
-  eventPole?: EventEntity;
 }

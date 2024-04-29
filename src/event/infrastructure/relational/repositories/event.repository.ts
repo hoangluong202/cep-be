@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EventEntity } from '../entities/event.entity';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Event } from 'src/event/domain/event';
 import { NullableType } from 'src/utils/types/nullable.type';
 import { EventMapper } from '../mappers/event.mapper';
@@ -14,8 +14,12 @@ export class EventRepository {
     private readonly repository: Repository<EventEntity>,
   ) {}
 
-  async findById(id: Event['id']): Promise<NullableType<Event>> {
-    const event = await this.repository.findOneBy({ id: id });
+  async findById(id: number): Promise<NullableType<Event>> {
+    const event = await this.repository.findOne({
+      where: { id },
+      relations: ['calendar', 'schedulers', 'poles'],
+    });
+    console.log(event);
     return event ? EventMapper.toDomain(event) : null;
   }
 
@@ -32,26 +36,7 @@ export class EventRepository {
   }
 
   async findMany(filters?: FilterEventDto | null): Promise<Event[]> {
-    const where: FindOptionsWhere<EventEntity> = {
-      polesArea: [
-        {
-          area: filters.area,
-        },
-      ],
-      polesRoad: [
-        {
-          road: filters.road,
-        },
-      ],
-      pole: {
-        id: filters.poleId,
-      },
-    };
-
-    const events = await this.repository.find({
-      relations: ['polesArea', 'polesRoad', 'pole', 'calendar', 'schedulers'],
-      where: where,
-    });
+    const events = await this.repository.find({});
     return events.map((event) => EventMapper.toDomain(event));
   }
 }
