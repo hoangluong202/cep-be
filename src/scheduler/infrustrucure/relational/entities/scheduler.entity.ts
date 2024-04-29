@@ -6,9 +6,6 @@ export class SchedulerEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: String })
-  area: string;
-
   @Column({ type: Number })
   poleId: number;
 

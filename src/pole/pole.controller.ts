@@ -26,7 +26,6 @@ export class PoleController {
   @Get('')
   @HttpCode(HttpStatus.OK)
   async findMany(@Query() query: FilterPoleDto): Promise<Pole[]> {
-    console.log(query);
     return this.poleService.findMany({ filterOptions: query });
   }
 }

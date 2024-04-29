@@ -21,13 +21,13 @@ export class EventEntity {
   @ManyToOne(() => CalendarEntity, (calendar) => calendar.events)
   calendar: CalendarEntity;
 
-  @OneToMany(() => PoleEntity, (smartpole) => smartpole.eventArea)
+  @OneToMany(() => PoleEntity, (pole) => pole.eventArea)
   polesArea: PoleEntity[];
 
-  @OneToMany(() => PoleEntity, (smartpole) => smartpole.eventRoad)
+  @OneToMany(() => PoleEntity, (pole) => pole.eventRoad)
   polesRoad: PoleEntity[];
 
-  @OneToOne(() => PoleEntity, (smartpole) => smartpole.eventPole)
+  @OneToOne(() => PoleEntity, (pole) => pole.eventPole)
   pole: PoleEntity;
 
   @OneToMany(() => SchedulerEntity, (scheduler) => scheduler.event, {
