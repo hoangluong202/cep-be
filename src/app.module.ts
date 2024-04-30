@@ -8,6 +8,7 @@ import { PoleModule } from './pole/pole.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { EventModule } from './event/event.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import { MqttModule } from './mqtt/mqtt.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
     CalendarModule,
     EventModule,
     SchedulerModule,
+    MqttModule,
   ],
 })
 export class AppModule {}
