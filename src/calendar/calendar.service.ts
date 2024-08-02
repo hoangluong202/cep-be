@@ -12,6 +12,10 @@ export class CalendarService {
     return this.calendarRepository.findById(id);
   }
 
+  findMany(): Promise<NullableType<Calendar[]>> {
+    return this.calendarRepository.findMany();
+  }
+
   async create(createCalendarDto: CreateCalendarDto): Promise<Calendar> {
     const calendarPayload = new Calendar();
     calendarPayload.name = createCalendarDto.name;

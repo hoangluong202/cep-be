@@ -23,6 +23,11 @@ export class CalendarController {
     return this.calendarService.findById(id);
   }
 
+  @Get('')
+  async findMany(): Promise<Calendar[]> {
+    return this.calendarService.findMany();
+  }
+
   @ApiOkResponse({
     type: Calendar,
   })

@@ -17,11 +17,7 @@ export class UserRepository {
     return user;
   }
 
-  async findByUsername(username: string): Promise<UserEntity> {
-    const user = this.userRepository.findOneBy({ username: username });
-    if (!user) {
-      throw new Error('User not found');
-    }
-    return user;
+  async findByUsername(username: string): Promise<UserEntity | null> {
+    return this.userRepository.findOneBy({ username: username });
   }
 }

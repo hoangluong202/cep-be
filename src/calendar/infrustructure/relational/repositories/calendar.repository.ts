@@ -18,6 +18,11 @@ export class CalendarRepository {
     return calendar ? CalendarMapper.toDomain(calendar) : null;
   }
 
+  async findMany(): Promise<NullableType<Calendar>[]> {
+    const calendars = await this.repository.find();
+    return calendars.map((calendar) => CalendarMapper.toDomain(calendar));
+  }
+
   async create(data: Calendar): Promise<Calendar> {
     try {
       const entity = CalendarMapper.toEntity(data);
