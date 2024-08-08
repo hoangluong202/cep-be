@@ -1,33 +1,41 @@
-# Build an image starting with the Node 18.0.0 image.
-
-# Use the official image as a parent image.
+# Build stage
 FROM node:18-alpine as build
-# Set the working directory in the container to /app
+
+# Set the working directory in the container to /usr/src/app
 WORKDIR /usr/src/app
-# Copy package.json and package-lock.json from your host to the working directory.
-COPY package*.json ./
-# Install the app's dependencies into the node_modules folder in the container.
-RUN npm install
-# Copy the rest of your app's source code from your host to your image filesystem.
+
+# Copy package.json and yarn.lock from your host to the working directory
+COPY package*.json yarn.lock ./
+
+# Install the app's dependencies into the node_modules folder in the container
+RUN yarn install
+
+# Copy the rest of your app's source code from your host to your image filesystem
 COPY . .
+
 # Compile code from TypeScript to JavaScript
-RUN npm run build
+RUN yarn build
 
 # Production stage
 FROM node:18-alpine
 
+# Set the working directory in the container to /usr/src/app
 WORKDIR /usr/src/app
 
+# Copy the compiled code from the build stage
 COPY --from=build /usr/src/app/dist ./dist
 
-COPY package*.json ./
+# Copy package.json and yarn.lock from your host to the working directory
+COPY package*.json yarn.lock ./
 
-RUN npm install --only=production
+# Install only production dependencies
+RUN yarn install --production
 
-RUN rm package*.json
+# Clean up the package.json and yarn.lock files
+RUN rm package*.json yarn.lock
 
+# Expose the application port
 EXPOSE 3003
 
+# Command to run the application
 CMD ["node", "dist/main.js"]
-
-

@@ -8,13 +8,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PoleService } from './pole.service';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Pole } from './domain/pole';
 import { FilterPoleDto } from './dto/query-pole.dto';
 import { GetPolesDto } from './dto/get-pole.dto';
 import { AuthGuard } from './../auth/auth.guard';
 
 @ApiTags('Pole')
+@ApiBearerAuth()
 @Controller('poles')
 export class PoleController {
   constructor(private readonly poleService: PoleService) {}
