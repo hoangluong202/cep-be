@@ -16,6 +16,7 @@ import { AuthGuard } from './../auth/auth.guard';
 
 @ApiTags('Pole')
 @ApiBearerAuth()
+@UseGuards(AuthGuard)
 @Controller('poles')
 export class PoleController {
   constructor(private readonly poleService: PoleService) {}
@@ -27,7 +28,6 @@ export class PoleController {
     return this.poleService.findById(id);
   }
 
-  @UseGuards(AuthGuard)
   @Get('')
   @HttpCode(HttpStatus.OK)
   async findMany(@Query() query: FilterPoleDto): Promise<GetPolesDto[]> {
