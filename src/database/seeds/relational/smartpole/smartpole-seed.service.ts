@@ -20,22 +20,16 @@ export class SmartpoleSeedService {
     };
     const pairsLocation1: PairLocation[] = [
       {
-        lat1: 10.772151681864232,
-        lng1: 106.65798775908489,
-        lat2: 10.773974113451079,
-        lng2: 106.66141881637034,
+        lat1: 10.772154517587094,
+        lng1: 106.65799078417935,
+        lat2: 10.773973404329478,
+        lng2: 106.66141965196553,
       },
       {
-        lat1: 10.77288868028852,
-        lng1: 106.66053760433263,
-        lat2: 10.774598045470702,
-        lng2: 106.65958282423979,
-      },
-      {
-        lat1: 10.774038415166572,
-        lng1: 106.65986228316743,
-        lat2: 10.773567305530507,
-        lng2: 106.65884728581092,
+        lat1: 10.772900034045186,
+        lng1: 106.66057025910759,
+        lat2: 10.774600991655372,
+        lng2: 106.65958636895377,
       },
     ];
     const pairsLocation2: PairLocation[] = [
@@ -62,6 +56,42 @@ export class SmartpoleSeedService {
         lng1: 106.80519804362596,
         lat2: 10.88024275291121,
         lng2: 106.80393910293876,
+      },
+      {
+        lat1: 10.879792385828841,
+        lng1: 106.80702536364485,
+        lat2: 10.881080660861091,
+        lng2: 106.8050095484772,
+      },
+      {
+        lat1: 10.880621599755438,
+        lng1: 106.80473344646668,
+        lat2: 10.880171722814598,
+        lng2: 106.80541198754605,
+      },
+      {
+        lat1: 10.880500334787325,
+        lng1: 106.80748321093425,
+        lat2: 10.882131160979615,
+        lng2: 106.80488639755671,
+      },
+      {
+        lat1: 10.881781905048289,
+        lng1: 106.80607683920181,
+        lat2: 10.88148992441128,
+        lng2: 106.8060820666026,
+      },
+      {
+        lat1: 10.880792495983851,
+        lng1: 106.80419573461363,
+        lat2: 10.880351574223042,
+        lng2: 106.80393217927262,
+      },
+      {
+        lat1: 10.880666344583583,
+        lng1: 106.80577049653942,
+        lat2: 10.881199424655708,
+        lng2: 106.80611310911006,
       },
     ];
     const distancesBetweenPoles = 25;
@@ -95,17 +125,18 @@ export class SmartpoleSeedService {
     for (const pairLocation of pairsLocation1) {
       const index = pairsLocation1.indexOf(pairLocation);
       const amount = amountOfPoles(pairLocation);
-      for (let i = 0; i < amount; i++) {
-        const status = faker.datatype.boolean();
+      for (let i = 0; i <= amount; i++) {
+        const status =
+          faker.number.int({ min: 0, max: 10 }) == 0 ? false : true;
         const lightLevel = status ? faker.number.int({ min: 0, max: 100 }) : 0;
         const smartpole = this.repository.create({
           name: `Smartpole ${i + 1}`,
           road: `Road ${index + 1}`,
           area: areas[0],
           latitude:
-            pairLocation.lat1 + (pairLocation.lat2 - pairLocation.lat1) * i,
+            ((amount - i) * pairLocation.lat1 + i * pairLocation.lat2) / amount,
           longitude:
-            pairLocation.lng1 + (pairLocation.lng2 - pairLocation.lng1) * i,
+            ((amount - i) * pairLocation.lng1 + i * pairLocation.lng2) / amount,
           status: status,
           lightLevel: lightLevel,
           burningTime: faker.number.int({
@@ -121,7 +152,7 @@ export class SmartpoleSeedService {
     for (const pairLocation of pairsLocation2) {
       const amount = amountOfPoles(pairLocation);
       const index = pairsLocation2.indexOf(pairLocation);
-      for (let i = 0; i < amount; i++) {
+      for (let i = 0; i <= amount; i++) {
         const smartpole = this.repository.create({
           name: `Smartpole ${i + 1}`,
           road: `Road ${index + 1}`,
@@ -130,7 +161,7 @@ export class SmartpoleSeedService {
             ((amount - i) * pairLocation.lat1 + i * pairLocation.lat2) / amount,
           longitude:
             ((amount - i) * pairLocation.lng1 + i * pairLocation.lng2) / amount,
-          status: faker.datatype.boolean(),
+          status: faker.number.int({ min: 0, max: 10 }) == 0 ? false : true,
           lightLevel: faker.number.int({ min: 0, max: 100 }),
           burningTime: faker.number.int({
             min: 0,
