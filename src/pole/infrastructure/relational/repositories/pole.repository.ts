@@ -33,17 +33,14 @@ export class PoleRepository implements PoleRepository {
   async findMany({
     filterOptions,
   }: {
-    filterOptions?: FilterPoleDto | null;
+    filterOptions: FilterPoleDto;
   }): Promise<Pole[]> {
     const where: FindOptionsWhere<PoleEntity> = {};
-    if (filterOptions?.area) {
+    if (filterOptions.area != 'all') {
       where.area = filterOptions.area;
     }
-    if (filterOptions?.road) {
-      where.road = filterOptions.road;
-    }
-    if (filterOptions?.poleId) {
-      where.id = filterOptions.poleId;
+    if (filterOptions.status != 'all') {
+      where.status = filterOptions.status == 'active' ? true : false;
     }
     const poles = await this.poleRepository.find({
       where: where,

@@ -11,7 +11,7 @@ export class SmartpoleSeedService {
     private repository: Repository<PoleEntity>,
   ) {}
   async run() {
-    const areas = ['HCMUT-CS1', 'HCMUT-CS2'];
+    const areas = ['hcmut-1', 'hcmut-2'];
     type PairLocation = {
       lat1: number;
       lng1: number;
@@ -92,6 +92,24 @@ export class SmartpoleSeedService {
         lng1: 106.80577049653942,
         lat2: 10.881199424655708,
         lng2: 106.80611310911006,
+      },
+      {
+        lat1: 10.880539504022975,
+        lng1: 106.80596452718419,
+        lat2: 10.881074203638493,
+        lng2: 106.80628303949877,
+      },
+      {
+        lat1: 10.879034630246244,
+        lng1: 106.80517898908967,
+        lat2: 10.880392523424032,
+        lng2: 106.80609532500617,
+      },
+      {
+        lat1: 10.878384676799945,
+        lng1: 106.80609970560249,
+        lat2: 10.879010129097457,
+        lng2: 106.80520511776747,
       },
     ];
     const distancesBetweenPoles = 25;

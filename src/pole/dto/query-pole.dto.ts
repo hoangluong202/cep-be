@@ -1,12 +1,9 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class FilterPoleDto {
-  @ApiPropertyOptional({ type: String })
-  area?: string | null;
+  @ApiProperty({ type: String, example: 'all' })
+  area: string;
 
-  @ApiPropertyOptional({ type: String })
-  road?: string | null;
-
-  @ApiPropertyOptional({ type: Number })
-  poleId?: number | null;
+  @ApiProperty({ type: String, example: 'all' })
+  status: string;
 }

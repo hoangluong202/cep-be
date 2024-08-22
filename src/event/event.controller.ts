@@ -27,14 +27,14 @@ export class EventController {
     return this.eventService.findById(id);
   }
 
-  @ApiOkResponse({
-    type: Event,
-  })
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  async create(@Body() createEventDto: CreateEventDto) {
-    return this.eventService.create(createEventDto);
-  }
+  // @ApiOkResponse({
+  //   type: Event,
+  // })
+  // @Post()
+  // @HttpCode(HttpStatus.CREATED)
+  // async create(@Body() createEventDto: CreateEventDto) {
+  //   return this.eventService.create(createEventDto);
+  // }
 
   @ApiOkResponse({
     type: [Event],

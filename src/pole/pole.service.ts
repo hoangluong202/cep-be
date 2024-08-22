@@ -18,7 +18,7 @@ export class PoleService {
   findMany({
     filterOptions,
   }: {
-    filterOptions?: FilterPoleDto | null;
+    filterOptions: FilterPoleDto;
   }): Promise<Pole[]> {
     return this.poleRepository.findMany({ filterOptions });
   }
