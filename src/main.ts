@@ -1,14 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as fs from 'fs';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const httpsOptions = {
+    key: fs.readFileSync('secrets/cert.key'),
+    cert: fs.readFileSync('secrets/cert.crt'),
+  };
+  const app = await NestFactory.create(AppModule, { httpsOptions });
   app.setGlobalPrefix('api');
   app.enableCors({
-    origin: 'http://localhost:3000',
-    // methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    // allowedHeaders: 'Content-Type, Accept',
+    origin: '*', // Allow all origins
     credentials: false,
   });
   const options = new DocumentBuilder()
@@ -18,8 +21,12 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('docs', app, document);
+  SwaggerModule.setup('docs', app, document, {
+    swaggerOptions: {
+      schemes: ['https'],
+    },
+  });
   await app.listen(3003);
-  console.log('Server running on http://localhost:3003/docs');
+  console.log('Server running on https://localhost:3003/docs');
 }
 bootstrap();

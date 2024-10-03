@@ -1,18 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserRepository } from './infrastructure/relational/repositories/user.repository';
-import { UserEntity } from './infrastructure/relational/entities/user.entity';
+import { Injectable } from '@nestjs/common';
+import { UserRepository } from './infrastructure/user.repository';
+import { NullableType } from '../utils/types/nullable.type';
+import { User } from './domain/user';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly usersRepository: UserRepository) {}
 
-  async findById(id: number): Promise<UserEntity> {
-    const user = await this.userRepository.findById(id);
-    if (!user) throw new NotFoundException('User not found');
-    return user;
+  findById(id: User['id']): Promise<NullableType<User>> {
+    return this.usersRepository.findById(id);
   }
 
-  async findByUsername(username: string): Promise<UserEntity | null> {
-    return this.userRepository.findByUsername(username);
+  findByUsername(username: User['username']): Promise<NullableType<User>> {
+    return this.usersRepository.findByUsername(username);
   }
 }

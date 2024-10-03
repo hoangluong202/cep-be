@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import mqtt from 'mqtt';
 import { InjectMqtt } from './config/mqtt.decorator';
 
@@ -9,36 +9,31 @@ export class MqttService {
     this.subscribe();
   }
 
-  private async subscribe(topic: string = 'huy_tran/feeds/dimming') {
+  private async subscribe(topic = 'huy_tran/feeds/dimming') {
     try {
       this.client.subscribe(topic);
-      const testData = {
-        id: 1,
-        value: 0,
-      };
-      const data = JSON.stringify({
-        value: JSON.stringify(testData),
-      });
-      this.client.publish(topic, data);
     } catch (e) {
-      console.log('Error subscribe', e);
+      throw new HttpException(
+        'Error subscribing to topic',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   private async listener() {
     this.client.on('message', (topic, message) => {
-      console.log('Message received', message.toString());
+      console.log('Message received', topic, message.toString());
       this.client.end();
     });
   }
 
-  async publish(topic: string, message: string) {
-    this.client.publish(topic, message, (err) => {
-      if (err) {
-        console.log('Error publish', err);
-      } else {
-        console.log('Published');
-      }
+  async publish(topic: string, dimming: number) {
+    const dimmingData = {
+      'smartpole-1': dimming,
+    };
+    const data = JSON.stringify({
+      value: JSON.stringify(dimmingData),
     });
+    this.client.publish(topic, data);
   }
 }

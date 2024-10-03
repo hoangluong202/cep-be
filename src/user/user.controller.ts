@@ -7,11 +7,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserEntity } from './infrastructure/relational/entities/user.entity';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from './../auth/auth.guard';
+import { User } from './domain/user';
+import { NullableType } from './../utils/types/nullable.type';
 
-@ApiTags('User')
+@ApiTags('Users')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller('users')
@@ -20,8 +21,8 @@ export class UserController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiParam({ name: 'id', type: String })
-  findById(@Param('id') id: number): Promise<UserEntity> {
+  @ApiParam({ name: 'id', type: String, required: true })
+  findOne(@Param('id') id: User['id']): Promise<NullableType<User>> {
     return this.userService.findById(id);
   }
 }

@@ -4,6 +4,9 @@ services:
     image: hoangluong202/cep-be
     env_file:
       - .env
+    volumes:
+      - ./secrets/cert.key:/usr/src/app/secrets/cert.key:ro
+      - ./secrets/cert.crt:/usr/src/app/secrets/cert.crt:ro
     restart: always
     depends_on:
       - postgres
