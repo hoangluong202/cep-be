@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity({ name: 'smartPoles' })
+@Entity({ name: 'smartpoles' })
 export class SmartPoleEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -27,7 +27,7 @@ export class SmartPoleEntity {
   @Column({ type: 'numeric' })
   frequency: number;
 
-  @Column({ type: 'numeric' })
+  @Column({ type: 'numeric', name: 'burning_duration' })
   burningDuration: number;
 
   @Column({ type: 'numeric' })
@@ -40,6 +40,10 @@ export class SmartPoleEntity {
   power: number;
 
   @ManyToMany(() => LocationEntity)
-  @JoinTable()
+  @JoinTable({
+    name: 'smartpole_in_location',
+    joinColumn: { name: 'smartpole_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'location_id', referencedColumnName: 'id' },
+  })
   locations: LocationEntity[];
 }

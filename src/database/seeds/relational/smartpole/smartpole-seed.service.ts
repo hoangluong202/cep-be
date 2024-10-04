@@ -1,17 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SmartPoleEntity } from 'src/smartpole/infrastructure/relational/entities/smartpole.entity';
+import { SmartPoleEntity } from '../../../../smartpole/infrastructure/relational/entities/smartpole.entity';
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
 
 @Injectable()
-export class SmartpoleSeedService {
+export class SmartPoleSeedService {
   constructor(
     @InjectRepository(SmartPoleEntity)
     private repository: Repository<SmartPoleEntity>,
   ) {}
   async run() {
-    const areas = ['hcmut-1', 'hcmut-2'];
     type PairLocation = {
       lat1: number;
       lng1: number;
@@ -141,53 +140,74 @@ export class SmartpoleSeedService {
     };
 
     for (const pairLocation of pairsLocation1) {
-      const index = pairsLocation1.indexOf(pairLocation);
       const amount = amountOfPoles(pairLocation);
       for (let i = 0; i <= amount; i++) {
         const status =
           faker.number.int({ min: 0, max: 10 }) == 0 ? false : true;
-        const lightLevel = status ? faker.number.int({ min: 0, max: 100 }) : 0;
-        const smartpole = this.repository.create({
-          name: `Smartpole ${i + 1}`,
-          road: `Road ${index + 1}`,
-          area: areas[0],
+        const dimming = status ? faker.number.int({ min: 0, max: 100 }) : 0;
+        const voltage = faker.number.float({
+          min: 210,
+          max: 230,
+          precision: 0.1,
+        });
+        const current = faker.number.float({
+          min: 1,
+          max: 1.6,
+          precision: 0.1,
+        });
+        const smartPole = this.repository.create({
           latitude:
             ((amount - i) * pairLocation.lat1 + i * pairLocation.lat2) / amount,
           longitude:
             ((amount - i) * pairLocation.lng1 + i * pairLocation.lng2) / amount,
           status: status,
-          lightLevel: lightLevel,
-          burningTime: faker.number.int({
+          dimming: dimming,
+          frequency: faker.number.int({ min: 0, max: 100 }),
+          burningDuration: faker.number.int({
             min: 0,
             max: 100000,
           }),
-          frequency: faker.number.int({ min: 0, max: 100 }),
+          voltage: voltage,
+          current: current,
+          power: voltage * current,
         });
-        await this.repository.save(smartpole);
+        await this.repository.save(smartPole);
       }
     }
 
     for (const pairLocation of pairsLocation2) {
       const amount = amountOfPoles(pairLocation);
-      const index = pairsLocation2.indexOf(pairLocation);
       for (let i = 0; i <= amount; i++) {
-        const smartpole = this.repository.create({
-          name: `Smartpole ${i + 1}`,
-          road: `Road ${index + 1}`,
-          area: areas[1],
+        const status =
+          faker.number.int({ min: 0, max: 10 }) == 0 ? false : true;
+        const dimming = status ? faker.number.int({ min: 0, max: 100 }) : 0;
+        const voltage = faker.number.float({
+          min: 210,
+          max: 230,
+          precision: 0.1,
+        });
+        const current = faker.number.float({
+          min: 1,
+          max: 1.6,
+          precision: 0.1,
+        });
+        const smartPole = this.repository.create({
           latitude:
             ((amount - i) * pairLocation.lat1 + i * pairLocation.lat2) / amount,
           longitude:
             ((amount - i) * pairLocation.lng1 + i * pairLocation.lng2) / amount,
           status: faker.number.int({ min: 0, max: 10 }) == 0 ? false : true,
-          lightLevel: faker.number.int({ min: 0, max: 100 }),
-          burningTime: faker.number.int({
+          dimming: dimming,
+          frequency: faker.number.int({ min: 0, max: 100 }),
+          burningDuration: faker.number.int({
             min: 0,
             max: 100000,
           }),
-          frequency: faker.number.int({ min: 0, max: 100 }),
+          voltage: voltage,
+          current: current,
+          power: voltage * current,
         });
-        await this.repository.save(smartpole);
+        await this.repository.save(smartPole);
       }
     }
   }

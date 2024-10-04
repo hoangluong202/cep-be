@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { CalendarEntity } from './infrustructure/relational/entities/calendar.entity';
-import { CalendarRepository } from './infrustructure/relational/repositories/calendar.repository';
 import { TemplateService } from './template.service';
 import { TemplateController } from './template.controller';
+import { RelationalTemplatePersistenceModule } from './infrustructure/relational/relational-persistence.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CalendarEntity])],
+  imports: [RelationalTemplatePersistenceModule],
   controllers: [TemplateController],
-  providers: [TemplateService, CalendarRepository],
-  exports: [TemplateService],
+  providers: [TemplateService],
+  exports: [TemplateService, RelationalTemplatePersistenceModule],
 })
 export class TemplateModule {}

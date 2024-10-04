@@ -2,15 +2,16 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SmartPoleEntity } from './entities/smartpole.entity';
 import { SmartPolesRelationalRepository } from './repositories/smartpole.repository';
+import { SmartPoleRepository } from '../smartpole.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SmartPoleEntity])],
   providers: [
     {
-      provide: SmartPoleEntity,
+      provide: SmartPoleRepository,
       useClass: SmartPolesRelationalRepository,
     },
   ],
-  exports: [SmartPoleEntity],
+  exports: [SmartPoleRepository],
 })
-export class RelationalPersistenceModule {}
+export class RelationalSmartPolePersistenceModule {}

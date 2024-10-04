@@ -1,11 +1,4 @@
-import { SmartPoleEntity } from '../../../../smartpole/infrastructure/relational/entities/smartpole.entity';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('locations')
 export class LocationEntity {
@@ -23,8 +16,4 @@ export class LocationEntity {
 
   @Column({ type: 'numeric' })
   longitude: number;
-
-  @ManyToMany(() => SmartPoleEntity)
-  @JoinTable()
-  smartPoles: SmartPoleEntity[];
 }

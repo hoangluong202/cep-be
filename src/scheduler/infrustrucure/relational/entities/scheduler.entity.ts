@@ -1,20 +1,30 @@
-import { EventEntity } from 'src/event/infrastructure/relational/entities/event.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { EventEntity } from '../../../../event/infrastructure/relational/entities/event.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity('scheduler')
+@Entity('schedulers')
 export class SchedulerEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: Number })
+  @Column({ type: Date, name: 'execution_time' })
+  executionTime: Date;
+
+  @Column({ type: String })
+  area: string;
+
+  @Column({ type: Number, name: 'pole_id' })
   poleId: number;
 
-  @Column()
-  time: Date;
-
   @Column({ type: Number })
-  lightLevel: number;
+  dimming: number;
 
   @ManyToOne(() => EventEntity, (eventEntity) => eventEntity.schedulers)
+  @JoinColumn({ name: 'event_id' })
   event: EventEntity;
 }

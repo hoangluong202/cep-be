@@ -1,12 +1,12 @@
-import { Calendar } from 'src/calendar/domain/calendar';
-import { Pole } from 'src/smartpole/domain/pole';
-import { Scheduler } from 'src/scheduler/domain/scheduler';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class Event {
+  @ApiProperty({ type: 'number' })
   id: number;
+
+  @ApiProperty({ type: 'string' })
+  name: string;
+
+  @ApiProperty({ type: 'string' })
   rule: string;
-  type: string;
-  calendar: Calendar;
-  poles?: Pole[] | null;
-  schedulers: Scheduler[];
 }

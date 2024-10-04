@@ -5,11 +5,12 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './database/config/typeorm';
 import { SmartPoleModule } from './smartpole/smartpole.module';
-import { CalendarModule } from './calendar/calendar.module';
 import { EventModule } from './event/event.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { MqttModule } from './mqtt/mqtt.module';
 import { JwtModule } from '@nestjs/jwt';
+import { TemplateModule } from './template/template.module';
+import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -31,10 +32,11 @@ import { JwtModule } from '@nestjs/jwt';
     UserModule,
     AuthModule,
     SmartPoleModule,
-    CalendarModule,
+    TemplateModule,
     EventModule,
     SchedulerModule,
     MqttModule,
+    LocationModule,
   ],
 })
 export class AppModule {}

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { SmartpoleSeedService } from './smartpole-seed.service';
+import { SmartPoleSeedService } from './smartpole-seed.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SmartPoleEntity } from 'src/smartpole/infrastructure/relational/entities/smartpole.entity';
+import { SmartPoleEntity } from '../../../../smartpole/infrastructure/relational/entities/smartpole.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SmartPoleEntity])],
-  providers: [SmartpoleSeedService],
-  exports: [SmartpoleSeedService],
+  providers: [SmartPoleSeedService],
+  exports: [SmartPoleSeedService],
 })
-export class SmartpoleSeedModule {}
+export class SmartPoleSeedModule {}

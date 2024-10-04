@@ -14,4 +14,4 @@ import { LocationRelationalRepository } from './repositories/location.repository
   ],
   exports: [LocationRepository],
 })
-export class RelationalPersistenceModule {}
+export class RelationalLocationPersistenceModule {}

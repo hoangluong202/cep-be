@@ -1,22 +1,14 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { EventEntity } from './infrastructure/relational/entities/event.entity';
 import { EventController } from './event.controller';
 import { EventService } from './event.service';
-import { EventRepository } from './infrastructure/relational/repositories/event.repository';
-import { SmartPoleModule } from 'src/smartpole/smartpole.module';
-import { CalendarModule } from 'src/calendar/calendar.module';
-import { SchedulerModule } from 'src/scheduler/scheduler.module';
+import { SchedulerModule } from '../scheduler/scheduler.module';
+import { RelationalEventPersistenceModule } from './infrastructure/relational/relational-persistence.module';
+import { LocationModule } from '../location/location.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([EventEntity]),
-    SmartPoleModule,
-    CalendarModule,
-    SchedulerModule,
-  ],
+  imports: [RelationalEventPersistenceModule, LocationModule, SchedulerModule],
   controllers: [EventController],
-  providers: [EventService, EventRepository],
-  exports: [EventService],
+  providers: [EventService],
+  exports: [EventService, RelationalEventPersistenceModule],
 })
 export class EventModule {}
