@@ -3,7 +3,7 @@ import { EventRepository } from './infrastructure/relational/repositories/event.
 import { Event } from './domain/event';
 import { CreateEventDto } from './dto/create-event.dto';
 import { NullableType } from 'src/utils/types/nullable.type';
-import { PoleService } from 'src/pole/pole.service';
+import { SmartPoleService } from 'src/smartpole/smartpole.service';
 import { CalendarService } from 'src/calendar/calendar.service';
 import { SchedulerService } from 'src/scheduler/scheduler.service';
 import { FilterEventDto } from './dto/query-event.dto';
@@ -12,7 +12,7 @@ import { FilterEventDto } from './dto/query-event.dto';
 export class EventService {
   constructor(
     private readonly eventRepository: EventRepository,
-    private readonly poleService: PoleService,
+    private readonly poleService: SmartPoleService,
     private readonly calendarService: CalendarService,
     private readonly schedulerService: SchedulerService,
   ) {}

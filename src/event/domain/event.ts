@@ -1,5 +1,5 @@
 import { Calendar } from 'src/calendar/domain/calendar';
-import { Pole } from 'src/pole/domain/pole';
+import { Pole } from 'src/smartpole/domain/pole';
 import { Scheduler } from 'src/scheduler/domain/scheduler';
 
 export class Event {

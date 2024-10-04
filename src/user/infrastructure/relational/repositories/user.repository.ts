@@ -8,19 +8,19 @@ import { UserMapper } from '../mappers/user.mapper';
 import { UserRepository } from '../../user.repository';
 
 @Injectable()
-export class UsersRelationalRepository implements UserRepository {
+export class UserRelationalRepository implements UserRepository {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly usersRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   async findById(id: number): Promise<NullableType<User>> {
-    const entity = await this.usersRepository.findOneBy({ id: id });
+    const entity = await this.userRepository.findOneBy({ id: id });
     return entity ? UserMapper.toDomain(entity) : null;
   }
 
   async findByUsername(username: string): Promise<NullableType<User>> {
-    const entity = await this.usersRepository.findOneBy({ username: username });
+    const entity = await this.userRepository.findOneBy({ username: username });
     return entity ? UserMapper.toDomain(entity) : null;
   }
 }

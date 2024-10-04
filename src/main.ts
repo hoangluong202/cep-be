@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fs from 'fs';
+import { ValidationPipe } from '@nestjs/common';
+import validationOptions from './utils/validation-options';
 
 async function bootstrap() {
   const httpsOptions = {
@@ -14,6 +16,9 @@ async function bootstrap() {
     origin: '*', // Allow all origins
     credentials: false,
   });
+
+  app.useGlobalPipes(new ValidationPipe(validationOptions));
+
   const options = new DocumentBuilder()
     .setTitle('API')
     .setDescription('API docs')
@@ -29,4 +34,4 @@ async function bootstrap() {
   await app.listen(3003);
   console.log('Server running on https://localhost:3003/docs');
 }
-bootstrap();
+void bootstrap();

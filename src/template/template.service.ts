@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CalendarRepository } from './infrustructure/relational/repositories/calendar.repository';
-import { Calendar } from './domain/calendar';
+import { Calendar } from './domain/template';
 import { CreateCalendarDto } from './dto/create-calendar.dto';
 import { NullableType } from 'src/utils/types/nullable.type';
 
 @Injectable()
-export class CalendarService {
+export class TemplateService {
   constructor(private readonly calendarRepository: CalendarRepository) {}
 
   findById(id: number): Promise<NullableType<Calendar>> {

@@ -2,10 +2,10 @@ import { Event } from 'src/event/domain/event';
 import { EventEntity } from '../entities/event.entity';
 import { CalendarEntity } from 'src/calendar/infrustructure/relational/entities/calendar.entity';
 import { SchedulerEntity } from 'src/scheduler/infrustrucure/relational/entities/scheduler.entity';
-import { PoleEntity } from 'src/pole/infrastructure/relational/entities/pole.entity';
+import { SmartPoleEntity } from 'src/smartpole/infrastructure/relational/entities/smartpole.entity';
 import { CalendarMapper } from 'src/calendar/infrustructure/relational/mappers/calendar.mapper';
 import { SchedulerMapper } from 'src/scheduler/infrustrucure/relational/mappers/scheduler.mapper';
-import { PoleMapper } from 'src/pole/infrastructure/relational/mappers/pole.mapper';
+import { SmartPoleMapper } from 'src/smartpole/infrastructure/relational/mappers/smartpole.mapper';
 
 export class EventMapper {
   static toDomain(raw: EventEntity): Event {
@@ -18,7 +18,7 @@ export class EventMapper {
     event.schedulers = raw.schedulers.map((scheduler) =>
       SchedulerMapper.toDomain(scheduler),
     );
-    event.poles = raw.poles.map((pole) => PoleMapper.toDomain(pole));
+    event.poles = raw.poles.map((pole) => SmartPoleMapper.toDomain(pole));
     return event;
   }
 
@@ -39,7 +39,7 @@ export class EventMapper {
     eventEntity.schedulers = schedulers;
 
     const poles = event.poles.map((pole) => {
-      const poleEntity = new PoleEntity();
+      const poleEntity = new SmartPoleEntity();
       poleEntity.id = pole.id;
       return poleEntity;
     });

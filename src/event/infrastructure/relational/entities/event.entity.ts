@@ -1,6 +1,6 @@
 import { CalendarEntity } from 'src/calendar/infrustructure/relational/entities/calendar.entity';
 import { SchedulerEntity } from 'src/scheduler/infrustrucure/relational/entities/scheduler.entity';
-import { PoleEntity } from 'src/pole/infrastructure/relational/entities/pole.entity';
+import { SmartPoleEntity } from 'src/smartpole/infrastructure/relational/entities/smartpole.entity';
 import {
   Column,
   Entity,
@@ -25,9 +25,9 @@ export class EventEntity {
   @ManyToOne(() => CalendarEntity, (calendar) => calendar.events)
   calendar: CalendarEntity;
 
-  @ManyToMany(() => PoleEntity)
+  @ManyToMany(() => SmartPoleEntity)
   @JoinTable()
-  poles: PoleEntity[];
+  poles: SmartPoleEntity[];
 
   @OneToMany(() => SchedulerEntity, (scheduler) => scheduler.event, {
     onDelete: 'CASCADE',

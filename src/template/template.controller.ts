@@ -8,14 +8,14 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { CalendarService } from './calendar.service';
-import { Calendar } from './domain/calendar';
+import { TemplateService } from './template.service';
+import { Calendar } from './domain/template';
 import { CreateCalendarDto } from './dto/create-calendar.dto';
 
 @ApiTags('Calendar')
 @Controller('calendars')
-export class CalendarController {
-  constructor(private readonly calendarService: CalendarService) {}
+export class TemplateController {
+  constructor(private readonly calendarService: TemplateService) {}
 
   @ApiParam({ name: 'id', type: 'number' })
   @Get(':id')

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from '../user.repository';
-import { UsersRelationalRepository } from './repositories/user.repository';
+import { UserRelationalRepository as UserRelationalRepository } from './repositories/user.repository';
 import { UserEntity } from './entities/user.entity';
 
 @Module({
@@ -9,7 +9,7 @@ import { UserEntity } from './entities/user.entity';
   providers: [
     {
       provide: UserRepository,
-      useClass: UsersRelationalRepository,
+      useClass: UserRelationalRepository,
     },
   ],
   exports: [UserRepository],
