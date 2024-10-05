@@ -3,12 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SmartPoleEntity } from '../../../../smartpole/infrastructure/relational/entities/smartpole.entity';
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
+import { LocationEntity } from '../../../../location/infrastructure/relational/entities/location.entity';
 
 @Injectable()
 export class SmartPoleSeedService {
   constructor(
     @InjectRepository(SmartPoleEntity)
     private repository: Repository<SmartPoleEntity>,
+
+    @InjectRepository(LocationEntity)
+    private locationRepository: Repository<LocationEntity>,
   ) {}
   async run() {
     type PairLocation = {
@@ -17,7 +21,7 @@ export class SmartPoleSeedService {
       lat2: number;
       lng2: number;
     };
-    const pairsLocation1: PairLocation[] = [
+    const listPairPointHcmut1: PairLocation[] = [
       {
         lat1: 10.772154517587094,
         lng1: 106.65799078417935,
@@ -31,7 +35,7 @@ export class SmartPoleSeedService {
         lng2: 106.65958636895377,
       },
     ];
-    const pairsLocation2: PairLocation[] = [
+    const listPairPointHcmut2: PairLocation[] = [
       {
         lat1: 10.879581718567092,
         lng1: 106.80506817435548,
@@ -111,6 +115,21 @@ export class SmartPoleSeedService {
         lng2: 106.80520511776747,
       },
     ];
+    const fakerData = [
+      {
+        area: 'hcmut1',
+        latitude: 10.77392998449525,
+        longitude: 106.65959695077382,
+        listPairPoint: listPairPointHcmut1,
+      },
+      {
+        area: 'hcmut2',
+        latitude: 10.880852145509786,
+        longitude: 106.80538147754153,
+        listPairPoint: listPairPointHcmut2,
+      },
+    ];
+
     const distancesBetweenPoles = 25;
 
     /**
@@ -139,75 +158,49 @@ export class SmartPoleSeedService {
       );
     };
 
-    for (const pairLocation of pairsLocation1) {
-      const amount = amountOfPoles(pairLocation);
-      for (let i = 0; i <= amount; i++) {
-        const status =
-          faker.number.int({ min: 0, max: 10 }) == 0 ? false : true;
-        const dimming = status ? faker.number.int({ min: 0, max: 100 }) : 0;
-        const voltage = faker.number.float({
-          min: 210,
-          max: 230,
-          precision: 0.1,
-        });
-        const current = faker.number.float({
-          min: 1,
-          max: 1.6,
-          precision: 0.1,
-        });
-        const smartPole = this.repository.create({
-          latitude:
-            ((amount - i) * pairLocation.lat1 + i * pairLocation.lat2) / amount,
-          longitude:
-            ((amount - i) * pairLocation.lng1 + i * pairLocation.lng2) / amount,
-          status: status,
-          dimming: dimming,
-          frequency: faker.number.int({ min: 0, max: 100 }),
-          burningDuration: faker.number.int({
-            min: 0,
-            max: 100000,
-          }),
-          voltage: voltage,
-          current: current,
-          power: voltage * current,
-        });
-        await this.repository.save(smartPole);
-      }
-    }
-
-    for (const pairLocation of pairsLocation2) {
-      const amount = amountOfPoles(pairLocation);
-      for (let i = 0; i <= amount; i++) {
-        const status =
-          faker.number.int({ min: 0, max: 10 }) == 0 ? false : true;
-        const dimming = status ? faker.number.int({ min: 0, max: 100 }) : 0;
-        const voltage = faker.number.float({
-          min: 210,
-          max: 230,
-          precision: 0.1,
-        });
-        const current = faker.number.float({
-          min: 1,
-          max: 1.6,
-          precision: 0.1,
-        });
-        const smartPole = this.repository.create({
-          latitude:
-            ((amount - i) * pairLocation.lat1 + i * pairLocation.lat2) / amount,
-          longitude:
-            ((amount - i) * pairLocation.lng1 + i * pairLocation.lng2) / amount,
-          status: faker.number.int({ min: 0, max: 10 }) == 0 ? false : true,
-          dimming: dimming,
-          frequency: faker.number.int({ min: 0, max: 100 }),
-          burningDuration: faker.number.int({
-            min: 0,
-            max: 100000,
-          }),
-          voltage: voltage,
-          current: current,
-          power: voltage * current,
-        });
-        await this.repository.save(smartPole);
+    for (const data of fakerData) {
+      const location = this.locationRepository.create({
+        area: data.area,
+        latitude: data.latitude,
+        longitude: data.longitude,
+      });
+      await this.locationRepository.save(location);
+      const listPairPoint = data.listPairPoint;
+      for (const pairPoint of listPairPoint) {
+        const amount = amountOfPoles(pairPoint);
+        for (let i = 0; i <= amount; i++) {
+          const status =
+            faker.number.int({ min: 0, max: 10 }) == 0 ? false : true;
+          const dimming = status ? faker.number.int({ min: 0, max: 100 }) : 0;
+          const voltage = faker.number.float({
+            min: 210,
+            max: 230,
+            multipleOf: 0.01,
+          });
+          const current = faker.number.float({
+            min: 1,
+            max: 1.6,
+            multipleOf: 0.01,
+          });
+          const smartPole = this.repository.create({
+            latitude:
+              ((amount - i) * pairPoint.lat1 + i * pairPoint.lat2) / amount,
+            longitude:
+              ((amount - i) * pairPoint.lng1 + i * pairPoint.lng2) / amount,
+            status: status,
+            dimming: dimming,
+            frequency: faker.number.int({ min: 0, max: 100 }),
+            burningDuration: faker.number.int({
+              min: 0,
+              max: 100000,
+            }),
+            voltage: voltage,
+            current: current,
+            power: parseFloat((voltage * current).toFixed(2)),
+            locations: [location],
+          });
+          await this.repository.save(smartPole);
+        }
       }
     }
   }

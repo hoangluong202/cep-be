@@ -8,8 +8,8 @@ export class LocationEntity {
   @Column({ type: 'varchar' })
   area: string;
 
-  @Column({ type: 'varchar' })
-  group: string;
+  @Column({ type: 'varchar', nullable: true })
+  group: string | null;
 
   @Column({ type: 'numeric' })
   latitude: number;
