@@ -4,15 +4,19 @@ import { SmartPoleEntity } from '../../../../smartpole/infrastructure/relational
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { LocationEntity } from '../../../../location/infrastructure/relational/entities/location.entity';
+import { UserEntity } from '../../../../user/infrastructure/relational/entities/user.entity';
 
 @Injectable()
 export class SmartPoleSeedService {
   constructor(
     @InjectRepository(SmartPoleEntity)
-    private repository: Repository<SmartPoleEntity>,
+    private smartPoleRepository: Repository<SmartPoleEntity>,
 
     @InjectRepository(LocationEntity)
     private locationRepository: Repository<LocationEntity>,
+
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
   ) {}
   async run() {
     type PairLocation = {
@@ -117,13 +121,15 @@ export class SmartPoleSeedService {
     ];
     const fakerData = [
       {
-        area: 'hcmut1',
+        areaName: 'BK Cơ sở 1',
+        areaKey: 'hcmut1',
         latitude: 10.77392998449525,
         longitude: 106.65959695077382,
         listPairPoint: listPairPointHcmut1,
       },
       {
-        area: 'hcmut2',
+        areaName: 'BK Cơ sở 2',
+        areaKey: 'hcmut2',
         latitude: 10.880852145509786,
         longitude: 106.80538147754153,
         listPairPoint: listPairPointHcmut2,
@@ -160,7 +166,8 @@ export class SmartPoleSeedService {
 
     for (const data of fakerData) {
       const location = this.locationRepository.create({
-        area: data.area,
+        areaKey: data.areaKey,
+        areaName: data.areaName,
         latitude: data.latitude,
         longitude: data.longitude,
       });
@@ -182,7 +189,7 @@ export class SmartPoleSeedService {
             max: 1.6,
             multipleOf: 0.01,
           });
-          const smartPole = this.repository.create({
+          const smartPole = this.smartPoleRepository.create({
             latitude:
               ((amount - i) * pairPoint.lat1 + i * pairPoint.lat2) / amount,
             longitude:
@@ -199,9 +206,16 @@ export class SmartPoleSeedService {
             power: parseFloat((voltage * current).toFixed(2)),
             locations: [location],
           });
-          await this.repository.save(smartPole);
+          await this.smartPoleRepository.save(smartPole);
         }
       }
     }
+
+    const user1 = {
+      username: 'luong.hoang',
+      password: 'password',
+    };
+    const userEntity = this.userRepository.create(user1);
+    await this.userRepository.save(userEntity);
   }
 }

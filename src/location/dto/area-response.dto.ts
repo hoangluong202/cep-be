@@ -1,21 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { SmartPole } from 'src/smartpole/domain/smartpole';
+import { Location } from '../domain/location';
+import { SmartPole } from '../../smartpole/domain/smartpole';
 
-export class Location {
+export class AreaResponseDto {
   @ApiProperty({ type: 'number' })
   id: number;
 
   @ApiProperty({ type: 'string' })
   areaKey: string;
 
-  @ApiProperty({ type: 'string' })
-  areaName: string;
-
   @ApiProperty({ type: 'string', nullable: true })
-  groupKey: string | null;
-
-  @ApiProperty({ type: 'string', nullable: true })
-  groupName: string | null;
+  areaName: string | null;
 
   @ApiProperty({ type: 'number' })
   latitude: number;
@@ -25,4 +20,12 @@ export class Location {
 
   @ApiPropertyOptional({ type: [SmartPole] })
   smartPoles?: SmartPole[];
+
+  constructor(location: Location) {
+    this.id = location.id;
+    this.areaKey = location.areaKey;
+    this.areaName = location.areaName;
+    this.latitude = location.latitude;
+    this.longitude = location.longitude;
+  }
 }

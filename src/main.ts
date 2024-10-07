@@ -31,7 +31,7 @@ async function bootstrap() {
       schemes: ['https'],
     },
   });
-  await app.listen(3003);
-  console.log('Server running on https://localhost:3003/docs');
+  await app.listen(process.env.APP_PORT || 3000);
+  console.log(`Server running on ${process.env.BACKEND_DOMAIN}/docs`);
 }
 void bootstrap();

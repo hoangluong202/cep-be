@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SmartPoleEntity } from './entities/smartpole.entity';
-import { SmartPolesRelationalRepository } from './repositories/smartpole.repository';
+import { SmartPoleRelationalRepository } from './repositories/smartpole.repository';
 import { SmartPoleRepository } from '../smartpole.repository';
 
 @Module({
@@ -9,7 +9,7 @@ import { SmartPoleRepository } from '../smartpole.repository';
   providers: [
     {
       provide: SmartPoleRepository,
-      useClass: SmartPolesRelationalRepository,
+      useClass: SmartPoleRelationalRepository,
     },
   ],
   exports: [SmartPoleRepository],

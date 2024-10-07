@@ -1,11 +1,5 @@
 import { LocationEntity } from '../../../../location/infrastructure/relational/entities/location.entity';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'smartpoles' })
 export class SmartPoleEntity {
@@ -39,11 +33,6 @@ export class SmartPoleEntity {
   @Column({ type: 'numeric' })
   power: number;
 
-  @ManyToMany(() => LocationEntity)
-  @JoinTable({
-    name: 'smartpole_in_location',
-    joinColumn: { name: 'smartpole_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'location_id', referencedColumnName: 'id' },
-  })
+  @ManyToMany(() => LocationEntity, (location) => location.smartPoles)
   locations: LocationEntity[];
 }
