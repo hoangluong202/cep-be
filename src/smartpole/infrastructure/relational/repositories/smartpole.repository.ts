@@ -6,6 +6,11 @@ import { SmartPoleRepository } from '../../smartpole.repository';
 import { SmartPole } from '../../../../smartpole/domain/smartpole';
 import { NullableType } from 'src/utils/types/nullable.type';
 import { SmartPoleMapper } from '../mappers/smartpole.mapper';
+import {
+  FilterSmartPoleDto,
+  SortSmartPoleDto,
+} from '../../../../smartpole/dto/query-smartpole.dto';
+import { IPaginationOptions } from '../../../../utils/types/pagination-options';
 
 @Injectable()
 export class SmartPoleRelationalRepository implements SmartPoleRepository {
@@ -15,8 +20,9 @@ export class SmartPoleRelationalRepository implements SmartPoleRepository {
   ) {}
 
   async findById(id: SmartPole['id']): Promise<NullableType<SmartPole>> {
-    const smartPoleEntity = await this.smartPoleRepository.findOneBy({
-      id: id,
+    const smartPoleEntity = await this.smartPoleRepository.findOne({
+      where: { id },
+      relations: ['locations'],
     });
     return smartPoleEntity ? SmartPoleMapper.toDomain(smartPoleEntity) : null;
   }
@@ -26,5 +32,41 @@ export class SmartPoleRelationalRepository implements SmartPoleRepository {
       id: In(ids),
     });
     return smartPoleEntities.map((entity) => SmartPoleMapper.toDomain(entity));
+  }
+
+  async findManyWithPagination({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterSmartPoleDto | null;
+    sortOptions?: SortSmartPoleDto[] | null;
+    paginationOptions?: IPaginationOptions;
+  }): Promise<SmartPole[]> {
+    const page = paginationOptions?.page;
+    const limit = paginationOptions?.limit;
+    const entities = await this.smartPoleRepository.find({
+      skip:
+        undefined !== page && undefined !== limit
+          ? (page - 1) * limit
+          : undefined,
+      take: undefined !== limit ? limit : undefined,
+      where: {
+        status: filterOptions?.status,
+        locations: {
+          areaKey: filterOptions?.areaKey,
+          groupKey: filterOptions?.groupKey,
+        },
+      },
+      order: sortOptions?.reduce(
+        (accumulator, sort) => ({
+          ...accumulator,
+          [sort.orderBy]: sort.order,
+        }),
+        {},
+      ),
+      relations: ['locations'],
+    });
+    return entities.map((entity) => SmartPoleMapper.toDomain(entity));
   }
 }

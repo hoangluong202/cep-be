@@ -21,17 +21,15 @@ export class SortSmartPoleDto {
 }
 
 export class FilterSmartPoleDto {
-  @ApiPropertyOptional({ type: String, example: 'hcmut1,hcmut2' })
+  @ApiPropertyOptional({ type: String, example: 'hcmut2' })
   @IsOptional()
   @IsString()
-  @Transform(({ value }) => value?.split(','))
-  area?: string[];
+  areaKey?: string;
 
-  @ApiPropertyOptional({ type: String, example: 'h1,h6' })
+  @ApiPropertyOptional({ type: String, example: 'h1' })
   @IsOptional()
   @IsString()
-  @Transform(({ value }) => value?.split(','))
-  group?: string[];
+  groupKey?: string;
 
   @ApiPropertyOptional({ type: Boolean, example: true })
   @IsOptional()
@@ -39,7 +37,7 @@ export class FilterSmartPoleDto {
   status?: boolean;
 }
 
-export class QuerySmartPoleDto {
+export class PaginationSmartPoleDto {
   @ApiPropertyOptional()
   @IsOptional()
   @Transform(({ value }) => (value ? Number(value) : 1))
@@ -51,6 +49,19 @@ export class QuerySmartPoleDto {
   @Transform(({ value }) => (value ? Number(value) : 8))
   @IsNumber()
   limit?: number;
+}
+
+export class QuerySmartPoleDto {
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  @Transform(({ value }) =>
+    value
+      ? plainToInstance(PaginationSmartPoleDto, JSON.parse(value))
+      : undefined,
+  )
+  @ValidateNested()
+  @Type(() => PaginationSmartPoleDto)
+  paginate?: PaginationSmartPoleDto | null;
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
@@ -59,7 +70,7 @@ export class QuerySmartPoleDto {
   )
   @ValidateNested()
   @Type(() => FilterSmartPoleDto)
-  filters?: FilterSmartPoleDto;
+  filters?: FilterSmartPoleDto | null;
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
@@ -70,5 +81,5 @@ export class QuerySmartPoleDto {
   })
   @ValidateNested({ each: true })
   @Type(() => SortSmartPoleDto)
-  sort?: SortSmartPoleDto;
+  sorts?: SortSmartPoleDto[] | null;
 }

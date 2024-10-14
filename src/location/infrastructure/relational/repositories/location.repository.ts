@@ -31,7 +31,7 @@ export class LocationRelationalRepository implements LocationRepository {
       areaKey: areaKey,
     });
     //TODO: fix BUG, get lat and lng with string
-    console.log('check repo entities', entities);
+    // console.log('check repo entities', entities);
     return entities.map((entity) => LocationMapper.toDomain(entity));
   }
 

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Location } from '../../location/domain/location';
 
 export class SmartPole {
   @ApiProperty({ type: Number })
@@ -30,4 +31,7 @@ export class SmartPole {
 
   @ApiProperty({ type: Number })
   power: number;
+
+  @ApiProperty({ type: Location, isArray: true })
+  locations?: Location[];
 }
