@@ -3,9 +3,9 @@ import { Location } from '../domain/location';
 
 export abstract class LocationRepository {
   abstract findAllAreas(): Promise<Location[]>;
-  abstract findAreaByKey(
+  abstract findAreasByKey(
     areaKey: Location['areaKey'],
-  ): Promise<NullableType<Location>>;
+  ): Promise<NullableType<Location[]>>;
   abstract findGroupsByArea(areaKey: Location['areaKey']): Promise<Location[]>;
   abstract findGroupByName(groupName: Location['groupName']): Promise<Location>;
   abstract createGroup(

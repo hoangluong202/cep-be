@@ -26,16 +26,16 @@ export class LocationRelationalRepository implements LocationRepository {
     return entities.map((entity) => LocationMapper.toDomain(entity));
   }
 
-  async findAreaByKey(areaKey: Location['areaKey']): Promise<Location> {
-    const entity = await this.locationRepository.findOneBy({
+  async findAreasByKey(areaKey: Location['areaKey']): Promise<Location[]> {
+    const entities = await this.locationRepository.findBy({
       areaKey: areaKey,
-      groupKey: null,
     });
-    return LocationMapper.toDomain(entity);
+    //TODO: fix BUG, get lat and lng with string
+    console.log('check repo entities', entities);
+    return entities.map((entity) => LocationMapper.toDomain(entity));
   }
 
   async findGroupsByArea(areaKey: Location['areaKey']): Promise<Location[]> {
-    console.log('areaKey', areaKey);
     const entities = await this.locationRepository.findBy({
       areaKey: areaKey,
       groupKey: Not(IsNull()),

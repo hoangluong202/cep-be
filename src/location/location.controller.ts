@@ -20,6 +20,7 @@ import { Location } from './domain/location';
 import { AreaResponseDto } from './dto/area-response.dto';
 import { GroupResponseDto } from './dto/group-response.dto';
 import { CreateGroupDto } from './dto/create-group.dto';
+import { NullableType } from '../utils/types/nullable.type';
 
 @ApiTags('Location')
 @ApiBearerAuth()
@@ -35,8 +36,19 @@ export class LocationController {
     return this.locationService.findAllAreas();
   }
 
+  @Get('areas/:areaKey')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: AreaResponseDto })
+  @ApiParam({ name: 'areaKey', type: Location['areaKey'], required: true })
+  async findAreaByKey(
+    @Param('areaKey') areaKey: Location['areaKey'],
+  ): Promise<NullableType<AreaResponseDto>> {
+    const test = await this.locationService.findAreaByKey(areaKey);
+    return test;
+  }
+
   @Get('areas/:areaKey/groups')
-  @ApiParam({ name: 'areaKey', type: String, required: true })
+  @ApiParam({ name: 'areaKey', type: Location['areaKey'], required: true })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: [GroupResponseDto] })
   findByArea(

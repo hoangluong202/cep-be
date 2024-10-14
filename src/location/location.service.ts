@@ -5,20 +5,27 @@ import { AreaResponseDto } from './dto/area-response.dto';
 import { GroupResponseDto } from './dto/group-response.dto';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { SmartPoleRepository } from '../smartpole/infrastructure/smartpole.repository';
-import { DataSource } from 'typeorm';
 import { convertVietnameseNameToKey } from '../utils/common/vietnamese.config';
+import { NullableType } from '../utils/types/nullable.type';
+import { AreaWithGroupsResDto } from './dto/area-with-group-response.dto';
 
 @Injectable()
 export class LocationService {
   constructor(
     private readonly locationRepository: LocationRepository,
     private readonly smartPoleRepository: SmartPoleRepository,
-    private readonly dataSource: DataSource,
   ) {}
 
   async findAllAreas(): Promise<AreaResponseDto[]> {
     const areas = await this.locationRepository.findAllAreas();
     return areas.map((area) => new AreaResponseDto(area));
+  }
+
+  async findAreaByKey(
+    areaKey: Location['areaKey'],
+  ): Promise<NullableType<AreaWithGroupsResDto>> {
+    const areas = await this.locationRepository.findAreasByKey(areaKey);
+    return areas.length > 0 ? new AreaWithGroupsResDto(areas) : null;
   }
 
   async findGroupsByArea(
@@ -32,7 +39,7 @@ export class LocationService {
     areaKey: Location['areaKey'],
     createGroupDto: CreateGroupDto,
   ): Promise<GroupResponseDto> {
-    const area = await this.locationRepository.findAreaByKey(areaKey);
+    const area = await this.locationRepository.findAreasByKey(areaKey);
     if (!area) {
       throw new BadRequestException('Khu vưc không tồn tại!');
     }
